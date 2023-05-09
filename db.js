@@ -1,6 +1,6 @@
 const sqlite3 = require("sqlite3").verbose;
 
-const dbFile = "db.sqlite"
+const dbFile = "db.sqlite";
 
 //se connecter a la base de donnees
 let db = new sqlite3.Database(dbFile, (err) => {
@@ -8,8 +8,8 @@ let db = new sqlite3.Database(dbFile, (err) => {
          console.error(err.message);
          throw err;
      }else{
-         console.log("connection a ala base sqlite3...");
-         const sql = `CREATE TABLE contacts(
+         console.log("connection a la base sqlite3...");
+         const sql = `CREATE TABLE contact(
              id INTEGER PRIMARY KEY AUTOINCREMENT, 
              name text,
              phone text,
