@@ -1,24 +1,26 @@
-const sqlite3 = require("sqlite3").verbose;
+const sqlite3 = require("sqlite3").verbose();
 
-const dbFile = "db.sqlite";
+const dbFile = "db.sqlite3";
 
 //se connecter a la base de donnees
-let db = new sqlite3.Database(dbFile, (err) => {
+const db = new sqlite3.Database(dbFile, (err) => {
      if (err){
          console.error(err.message);
          throw err;
      }else{
          console.log("connection a la base sqlite3...");
-         const sql = `CREATE TABLE contact(
+         
+         const sql = `CREATE TABLE article(
              id INTEGER PRIMARY KEY AUTOINCREMENT, 
-             name text,
-             phone text,
-             email text
+            Titre text,
+            Contenu text,
+            Auteur text
          )` 
          db.run(sql, (err)=> {
              if(err) {
-                 console.log("Table deja creer");
+                 console.log("Article deja creer");
              }
          });
      }
 });
+module.exports = db;
