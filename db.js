@@ -11,11 +11,11 @@ const db = new sqlite3.Database(dbFile, (err) => {
          console.log("connection a la base sqlite3...");
          
          const sql = `CREATE TABLE article(
-             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            Titre text,
-            Contenu text,
-            Auteur text
-         )` 
+             Titre text,
+             Contenu text,
+             Auteur text,
+             Date text
+         )`
          db.run(sql, (err)=> {
              if(err) {
                  console.log("Article deja creer");

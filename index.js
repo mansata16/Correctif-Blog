@@ -12,7 +12,7 @@ app.use(express.json());
 
 const PORT = 3000;
 
-//Afficher un contact avec son ID
+//Afficher un article avec son ID
 app.get("/article/:id", (req, res)=>{
     const {id: articleID } = req.params;
     const sql = "SELECT * FROM article WHERE id = ?";
@@ -26,18 +26,21 @@ app.get("/article/:id", (req, res)=>{
     }) ;
 });
 
-//creer un nouveau contact
+//creer un nouvel article
 app.post("/article", (req, res) => {
+   ` ALTER TABLE article ADD COLUMN Date date`;
    
-    const {Titre, Contenu, Auteur}  = req.body;
-     if(!Titre || !Contenu || !Auteur) {
+    const {Titre, Contenu, Date, Auteur}  = req.body;
+
+     if(!Titre || !Contenu || !Date || !Auteur) {
         res.status(400).json({error:"Merci de remplir tous les champs"});
         return;
+
     }
 
-    const article = {Titre, Contenu, Auteur };
-    const sql = 'INSERT INTO article (Titre, Contenu, Auteur ) VALUES (?,?,?)'
-    const params = [article.Titre, article.Contenu, article.Auteur]
+    const article = {Titre, Contenu, Date, Auteur };
+    const sql = 'INSERT INTO article (Titre, Contenu,  Date, Auteur ) VALUES (?,?,?,?)'
+    const params = [article.Titre, article.Contenu,article.Date, article.Auteur]
     db.run (sql, params, function(err, result){
         if (err){
             res.status(400).json({error: err.message });
@@ -48,19 +51,20 @@ app.post("/article", (req, res) => {
    
 });
 
-//Modifier un contact
+
+//Modifier un article
 
 app.put("/article/:id", (req, res) => {
    const {id: articleID } = req.params;
-    const {Titre, Contenu, Auteur }  = req.body;
-     if(!Titre || !Contenu || !Auteur) {
+    const {Titre, Contenu, Date, Auteur }  = req.body;
+     if(!Titre || !Contenu || !Date|| !Auteur) {
         res.status(400).json({error:"Merci de remplir tous les champs"});
         return;
     }
 
-    const article= {Titre, Contenu, Auteur  };
-    const sql = "UPDATE article SET Titre = ?, Contenu= ?,  Auteur= ? WHERE id = ?";
-    const params = [article.Titre, article.Contenu, article.Auteur, articleID]
+    const article= {Titre, Contenu, Date, Auteur  };
+    const sql = "UPDATE article SET Titre = ?, Contenu= ?, Date = ?,  Auteur= ? WHERE id = ?";
+    const params = [article.Titre, article.Contenu, article.Date, article.Auteur, articleID]
     db.run (sql, params, function(err, raw){
         if (err){
             res.status(400).json({error: err.message });
@@ -71,7 +75,7 @@ app.put("/article/:id", (req, res) => {
    
 });
 
-//supprimer un contact
+//supprimer un article
 app.delete("/article/:id", (req, res) => {
     const {id: articleID} = req.params;
      const sql = "DELETE FROM article WHERE id = ?";
@@ -85,8 +89,8 @@ app.delete("/article/:id", (req, res) => {
     
  });
 
-//Lister les contacts
-app.get("/article", (req, res)=>{
+//Lister les articles
+app.get("/article", (_req, res)=>{
     const sql = "SELECT * FROM article";
     db.all(sql, (err, rows)=>{
         if (err){
@@ -100,7 +104,7 @@ app.get("/article", (req, res)=>{
 
 
 //demarrer le serveur
-app.get("/", function(req, res){
+app.get("/", function(_req, res){
     res.json({message: "L'API marche bien!"});
 }); 
 
